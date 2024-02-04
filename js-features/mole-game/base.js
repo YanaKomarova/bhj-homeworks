@@ -1,4 +1,4 @@
-(() => {
+
   let playing = true,
     activeHole = 1;
 
@@ -19,4 +19,4 @@
     }, 800 );
 
   next();
-})();
+
