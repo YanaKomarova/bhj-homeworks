@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         items.forEach(item => {
             item.addEventListener('click', (e) => {
-                e.preventDefault(); // Предотвращаем переход по ссылке
+                e.preventDefault(); 
                 value.textContent = item.textContent;
                 list.classList.remove('dropdown__list_active');
             });
