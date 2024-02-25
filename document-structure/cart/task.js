@@ -10,31 +10,29 @@ document.addEventListener('DOMContentLoaded', function() {
         addButton.addEventListener('click', function() {
             const quantity = parseInt(quantityValue.textContent);
             
-            if (quantity > 0) {
-                let cartProduct = cartProducts.querySelector(`.cart__product[data-id="${productId}"]`);
+            let cartProduct = cartProducts.querySelector(`.cart__product[data-id="${productId}}`);
                 
-                if (cartProduct) {
-                    const cartProductCount = cartProduct.querySelector('.cart__product-count');
-                    const currentCount = parseInt(cartProductCount.textContent);
-                    cartProductCount.textContent = currentCount + quantity;
-                } else {
-                    const productTitle = product.querySelector('.product__title').textContent;
-                    const productImage = product.querySelector('.product__image').src;
+            if (cartProduct) {
+                const cartProductCount = cartProduct.querySelector('.cart__product-count');
+                const currentCount = parseInt(cartProductCount.textContent);
+                cartProductCount.textContent = currentCount + quantity;
+            } else {
+                const productTitle = product.querySelector('.product__title').textContent;
+                const productImage = product.querySelector('.product__image').src;
                     
-                    const newCartProduct = document.createElement('div');
-                    newCartProduct.className = 'cart__product';
-                    newCartProduct.setAttribute('data-id', productId);
+                const newCartProduct = document.createElement('div');
+                newCartProduct.className = 'cart__product';
+                newCartProduct.setAttribute('data-id', productId);
                     
-                    newCartProduct.innerHTML = `
-                        <img class="cart__product-image" src="${productImage}">
-                        <div class="cart__product-count">${quantity}</div>
-                    `;
+                newCartProduct.innerHTML = `
+                    <img class="cart__product-image" src="${productImage}">
+                    <div class="cart__product-count">${quantity}</div>
+                `;
                     
-                    cartProducts.appendChild(newCartProduct);
-                }
-                
-                quantityValue.textContent = '1'; // Сброс количества товара после добавления в корзину
+                cartProducts.appendChild(newCartProduct);
             }
+                
+            quantityValue.textContent = '1'; // Сброс количества товара после добавления в корзину
         });
         
         const decButton = product.querySelector('.product__quantity-control_dec');

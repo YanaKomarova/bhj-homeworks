@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     tooltipElement.style.left = rect.left + 'px';
             }
 
-            tooltipElement.classList.add('tooltip_active');
+            tooltipElement.classList.toggle('tooltip_active');
         });
     });
 

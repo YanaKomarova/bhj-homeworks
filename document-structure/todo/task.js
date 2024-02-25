@@ -2,9 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const tasksList = document.getElementById('tasks__list');
     const taskInput = document.getElementById('task__input');
     const addTaskButton = document.getElementById('tasks__add');
-    
-    // Загрузка задач из localStorage при загрузке страницы
-    loadTasksFromStorage();
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
     addTaskButton.addEventListener('click', function(event) {
         event.preventDefault();
@@ -20,14 +18,22 @@ document.addEventListener('DOMContentLoaded', function() {
     function addTask() {
         const taskText = taskInput.value.trim();
         if (taskText !== '') {
-            const task = createTaskElement(taskText);
-            tasksList.appendChild(task);
-            saveTasksToStorage();
+            tasks.push(taskText);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
             taskInput.value = '';
         }
     }
 
-    function createTaskElement(taskText) {
+    function renderTasks() {
+        tasksList.innerHTML = '';
+        tasks.forEach((taskText, index) => {
+            const task = createTaskElement(taskText, index);
+            tasksList.appendChild(task);
+        });
+    }
+
+    function createTaskElement(taskText, index) {
         const task = document.createElement('div');
         task.className = 'task';
         
@@ -39,8 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
         removeButton.className = 'task__remove';
         removeButton.innerHTML = '&times;';
         removeButton.addEventListener('click', function() {
-            task.remove();
-            saveTasksToStorage();
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
         });
         
         task.appendChild(taskTitle);
@@ -49,22 +56,5 @@ document.addEventListener('DOMContentLoaded', function() {
         return task;
     }
 
-    function saveTasksToStorage() {
-        const tasks = tasksList.innerHTML;
-        localStorage.setItem('tasks', tasks);
-    }
-
-    function loadTasksFromStorage() {
-        const tasks = localStorage.getItem('tasks');
-        if (tasks) {
-            tasksList.innerHTML = tasks;
-            const removeButtons = document.querySelectorAll('.task__remove');
-            removeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    button.parentElement.remove();
-                    saveTasksToStorage();
-                });
-            });
-        }
-    }
+    renderTasks();
 });
